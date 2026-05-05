@@ -121,3 +121,25 @@ def compute_surprisals(text: str) -> dict:
     result = {"words": words, "surprisals": word_surprisals}
     _save_cache(key, result)
     return result
+
+
+def compute_surprisals_with_context(context: str, text: str) -> dict:
+    """Compute surprisals for text conditioned on context; return only text-word surprisals.
+
+    Concatenates context + text, runs the model on the full string, then strips
+    the context words from the result. Whitespace word count matches GPT-2 word
+    segmentation reliably for clean prose (contractions, punctuation attached to
+    words are each treated as one unit by both methods).
+    """
+    context = context.strip()
+    if not context:
+        return compute_surprisals(text)
+
+    combined = context + " " + text.strip()
+    result = compute_surprisals(combined)
+
+    n_context_words = len(context.split())
+    return {
+        "words": result["words"][n_context_words:],
+        "surprisals": result["surprisals"][n_context_words:],
+    }

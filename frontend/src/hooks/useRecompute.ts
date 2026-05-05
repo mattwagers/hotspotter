@@ -19,9 +19,16 @@ export function useRecompute() {
       .slice(hotspot.startWord, hotspot.endWord + 1)
       .map((w) => w.surprisal)
 
+    // Up to 200 words of preceding transcript as context so swap surprisals
+    // are conditioned on the same story context as the baseline.
+    const context = words
+      .slice(Math.max(0, hotspot.startWord - 200), hotspot.startWord)
+      .map((w) => w.text)
+      .join(' ')
+
     const [loRes, hiRes] = await Promise.all([
-      fetchSurprisals(hotspot.loSwap),
-      fetchSurprisals(hotspot.hiSwap),
+      fetchSurprisals(hotspot.loSwap, context),
+      fetchSurprisals(hotspot.hiSwap, context),
     ])
 
     const deltaLo = loRes ? computeDelta(baseline, loRes.surprisals) : null
@@ -69,13 +76,13 @@ export function useRecompute() {
     return true
   }
 
-  async function fetchSurprisals(text: string) {
+  async function fetchSurprisals(text: string, context = '') {
     if (!text.trim()) return null
     try {
       const res = await fetch(`${API}/surprisals`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ text, context }),
       })
       if (!res.ok) return null
       setServerStatus('online')

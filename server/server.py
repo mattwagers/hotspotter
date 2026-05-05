@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from surprisal import compute_surprisals
+from surprisal import compute_surprisals, compute_surprisals_with_context
 
 app = FastAPI(title="Hotspotter Surprisal Server")
 
@@ -16,6 +16,7 @@ app.add_middleware(
 
 class SurprisalRequest(BaseModel):
     text: str
+    context: str = ""
 
 
 @app.get("/health")
@@ -25,4 +26,6 @@ def health():
 
 @app.post("/surprisals")
 def surprisals(req: SurprisalRequest):
+    if req.context:
+        return compute_surprisals_with_context(req.context, req.text)
     return compute_surprisals(req.text)

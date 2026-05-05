@@ -1,7 +1,35 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useStore } from '../../store'
 import { useRecompute } from '../../hooks/useRecompute'
 import type { Hotspot } from '../../types'
+
+//                   HID  St   End  NoChg  LoSw  HiSw  ΔLo  ΔHi  ΣΔLo ΣΔHi PkLo PkHi  Notes  Actions
+const DEFAULT_WIDTHS = [64,  52,  52,  130,  130,  130,  68,  68,  68,  68,  68,  68,  130,  90]
+
+function useColumnResize(defaults: number[]) {
+  const [widths, setWidths] = useState(defaults)
+  const drag = useRef<{ index: number; startX: number; startWidth: number } | null>(null)
+
+  function onMouseDown(index: number, e: React.MouseEvent) {
+    e.preventDefault()
+    drag.current = { index, startX: e.clientX, startWidth: widths[index] }
+
+    function onMove(ev: MouseEvent) {
+      if (!drag.current) return
+      const next = Math.max(40, drag.current.startWidth + ev.clientX - drag.current.startX)
+      setWidths((w) => { const a = [...w]; a[drag.current!.index] = next; return a })
+    }
+    function onUp() {
+      drag.current = null
+      document.removeEventListener('mousemove', onMove)
+      document.removeEventListener('mouseup', onUp)
+    }
+    document.addEventListener('mousemove', onMove)
+    document.addEventListener('mouseup', onUp)
+  }
+
+  return { widths, onMouseDown }
+}
 
 const CELL = 'px-2 py-1'
 const INPUT =
@@ -197,6 +225,7 @@ export default function HotspotTable() {
   const hotspots = useStore((s) => s.hotspots)
   const { recomputeAll } = useRecompute()
   const [computingAll, setComputingAll] = useState(false)
+  const { widths, onMouseDown } = useColumnResize(DEFAULT_WIDTHS)
 
   async function handleRecomputeAll() {
     setComputingAll(true)
@@ -227,16 +256,25 @@ export default function HotspotTable() {
           Select a span in the transcript to create a hotspot.
         </div>
       ) : (
-        <div className="overflow-y-auto flex-1">
-          <table className="w-full text-xs table-fixed">
+        <div className="overflow-auto flex-1">
+          <table className="text-xs table-fixed" style={{ width: widths.reduce((a, b) => a + b, 0) }}>
+            <colgroup>
+              {widths.map((w, i) => <col key={i} style={{ width: w }} />)}
+            </colgroup>
             <thead className="bg-gray-50 sticky top-0 z-10">
               <tr>
                 {HEADERS.map((h, i) => (
                   <th
                     key={i}
-                    className="px-2 py-1 text-left font-medium text-gray-500 border-b border-gray-200 whitespace-nowrap"
+                    className="relative px-2 py-1 text-left font-medium text-gray-500 border-b border-gray-200 whitespace-nowrap overflow-visible"
                   >
                     {h}
+                    {i < HEADERS.length - 1 && (
+                      <div
+                        className="absolute right-0 top-1 bottom-1 w-1 cursor-col-resize rounded-full opacity-0 hover:opacity-100 hover:bg-indigo-400"
+                        onMouseDown={(e) => onMouseDown(i, e)}
+                      />
+                    )}
                   </th>
                 ))}
               </tr>
