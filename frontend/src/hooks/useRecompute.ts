@@ -1,5 +1,5 @@
 import { useStore } from '../store'
-import { computeDelta } from '../utils/surprisalMath'
+import { computeDelta, computeSumDelta, computePeak } from '../utils/surprisalMath'
 import { alignSurprisals } from '../utils/alignment'
 
 const API = '/api'
@@ -26,10 +26,18 @@ export function useRecompute() {
 
     const deltaLo = loRes ? computeDelta(baseline, loRes.surprisals) : null
     const deltaHi = hiRes ? computeDelta(baseline, hiRes.surprisals) : null
+    const sumDeltaLo = loRes ? computeSumDelta(baseline, loRes.surprisals) : null
+    const sumDeltaHi = hiRes ? computeSumDelta(baseline, hiRes.surprisals) : null
+    const peakLo = loRes ? computePeak(loRes.surprisals) : null
+    const peakHi = hiRes ? computePeak(hiRes.surprisals) : null
 
     updateHotspot(hid, {
       deltaLo,
       deltaHi,
+      sumDeltaLo,
+      sumDeltaHi,
+      peakLo,
+      peakHi,
       _cache: {
         loSwapSurp: loRes?.surprisals ?? null,
         hiSwapSurp: hiRes?.surprisals ?? null,

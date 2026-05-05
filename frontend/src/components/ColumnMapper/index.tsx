@@ -9,8 +9,12 @@ const TARGET_FIELDS = [
   { key: 'noChange',  label: 'No Change',   required: false },
   { key: 'loSwap',    label: 'Lo Swap',     required: false },
   { key: 'hiSwap',    label: 'Hi Swap',     required: false },
-  { key: 'deltaLo',   label: 'ΔLo',         required: false },
+  { key: 'deltaLo',    label: 'ΔLo',         required: false },
   { key: 'deltaHi',   label: 'ΔHi',         required: false },
+  { key: 'sumDeltaLo', label: 'ΣΔLo',       required: false },
+  { key: 'sumDeltaHi', label: 'ΣΔHi',       required: false },
+  { key: 'peakLo',    label: 'Pk Lo',        required: false },
+  { key: 'peakHi',    label: 'Pk Hi',        required: false },
   { key: 'notes',     label: 'Notes',       required: false },
 ] as const
 
@@ -24,9 +28,13 @@ const ALIASES: Record<TargetKey, string[]> = {
   noChange:  ['nochange', 'no_change', 'noswap', 'original', 'span'],
   loSwap:    ['loswap', 'lo_swap', 'lo', 'lowswap'],
   hiSwap:    ['hiswap', 'hi_swap', 'hi', 'highswap'],
-  deltaLo:   ['deltalo', 'delta_lo', 'dlo'],
-  deltaHi:   ['deltahi', 'delta_hi', 'dhi'],
-  notes:     ['notes', 'note', 'comment'],
+  deltaLo:    ['deltalo', 'delta_lo', 'dlo'],
+  deltaHi:    ['deltahi', 'delta_hi', 'dhi'],
+  sumDeltaLo: ['sumdeltalo', 'sum_delta_lo'],
+  sumDeltaHi: ['sumdeltahi', 'sum_delta_hi'],
+  peakLo:     ['peaklo', 'peak_lo'],
+  peakHi:     ['peakhi', 'peak_hi'],
+  notes:      ['notes', 'note', 'comment'],
 }
 
 function norm(s: string) {
@@ -79,6 +87,10 @@ function rowsToHotspots(
       hiSwap: get('hiSwap'),
       deltaLo: getFloat('deltaLo'),
       deltaHi: getFloat('deltaHi'),
+      sumDeltaLo: getFloat('sumDeltaLo'),
+      sumDeltaHi: getFloat('sumDeltaHi'),
+      peakLo: getFloat('peakLo'),
+      peakHi: getFloat('peakHi'),
       notes: get('notes'),
       _cache: { loSwapSurp: null, hiSwapSurp: null },
     }

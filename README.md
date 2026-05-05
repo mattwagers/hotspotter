@@ -6,14 +6,14 @@ A psycholinguistic stimulus design tool for annotating **verbatim recall hotspot
 
 ## What it does
 
-You load a story transcript as plain text. Words become individually clickable spans. You select a word range (click + shift-click) and create a **hotspot** — a labeled region with an original phrase, a low-surprisal swap, and a high-surprisal swap. The tool calls a local GPT-2 server to compute per-word surprisals for each swap condition, then reports the mean surprisal delta (bits/word) relative to the original span. A full-story surprisal ribbon and inline sparklines give you a visual read on where the surprisal landscape peaks.
+You load a story transcript as plain text. Words become individually clickable spans. You select a word range (click + shift-click) and create a **hotspot** — a labeled region with an original phrase, a low-surprisal swap, and a high-surprisal swap. The tool calls a local GPT-2 server to compute per-word surprisals for each swap condition, then reports three measures relative to the original span: mean delta (bits/word), sum delta (total bits), and peak surprisal (max bits at any single word). A full-story surprisal ribbon and inline sparklines give you a visual read on where the surprisal landscape peaks.
 
 **Typical workflow:**
 1. Load a transcript `.txt` file → words appear as clickable spans
 2. Click ⚡ to compute baseline surprisals for the full transcript via the server
 3. Click a word, then shift-click another to select a span → click **+ Create hotspot**
 4. In the Hotspot Table, fill in Lo Swap and Hi Swap text, then click ↺ to compute Δ values
-5. Export hotspots as a clean 9-column CSV for your stimulus list
+5. Export hotspots as a 13-column CSV for your stimulus list
 
 ---
 
@@ -49,7 +49,43 @@ hotspot/
 
 **State flow:** All UI state lives in a single Zustand store (`words`, `hotspots`, `selection`, `serverStatus`, `displayMode`). Components read from and write to the store directly — no prop drilling.
 
-**Surprisal delta:** `Δ = mean(swap surprisals) − mean(baseline surprisals)` over span words, in bits/word. Swap word count can differ from the original span; means are computed independently.
+---
+
+## Surprisal measures
+
+Each hotspot computes three measures per swap condition (Lo and Hi), all relative to the **baseline** — the original span of words from the loaded transcript surprisals.
+
+`null` values are excluded before any computation. The first word in a GPT-2 surprisal sequence is typically `null` (no prior context) and is silently dropped.
+
+### Mean delta (ΔLo / ΔHi) — `delta_lo`, `delta_hi`
+
+```
+Δ = mean(swap surprisals) − mean(baseline surprisals)
+```
+
+Per-word surprisal difference in bits/word. Because means are computed independently, swap phrases of different length than the original span are handled correctly. Positive = swap is more surprising than baseline; negative = less surprising.
+
+**Use this when** you want a length-normalized measure of how much more or less predictable the swap is word-for-word.
+
+### Sum delta (ΣΔLo / ΣΔHi) — `sum_delta_lo`, `sum_delta_hi`
+
+```
+ΣΔ = sum(swap surprisals) − sum(baseline surprisals)
+```
+
+Total bits difference across the entire phrase. Unlike mean delta, this is sensitive to phrase length: a longer swap accumulates more surprisal even if its per-word rate is similar to the baseline. Can diverge from mean delta when swap and baseline differ substantially in word count.
+
+**Use this when** you care about the total processing load difference rather than the per-word rate, or when you suspect phrase length itself is a confound.
+
+### Peak swap surprisal (Pk Lo / Pk Hi) — `peak_lo`, `peak_hi`
+
+```
+Peak = max(swap surprisals)
+```
+
+The single highest surprisal value among the swap's words (absolute, in bits). This is not a delta — it measures where the swap hits hardest regardless of the baseline. Useful for diagnosing cases where a high mean delta is driven by one extremely surprising word rather than distributed surprisal across the phrase.
+
+**Use this when** mean delta pushes against intuition — a high peak with a moderate mean delta suggests one word is doing most of the work.
 
 ---
 

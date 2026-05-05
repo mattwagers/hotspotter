@@ -11,8 +11,12 @@ export interface Hotspot {
   noChange: string       // span text (derived, not editable)
   loSwap: string
   hiSwap: string
-  deltaLo: number | null // mean bits/word change vs baseline
+  deltaLo: number | null    // mean bits/word change vs baseline
   deltaHi: number | null
+  sumDeltaLo: number | null // sum(swap) − sum(baseline), total bits
+  sumDeltaHi: number | null
+  peakLo: number | null     // max surprisal in lo swap
+  peakHi: number | null
   notes: string
   _cache: {
     loSwapSurp: number[] | null

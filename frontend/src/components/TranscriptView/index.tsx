@@ -51,6 +51,10 @@ export default function TranscriptView() {
       hiSwap: '',
       deltaLo: null,
       deltaHi: null,
+      sumDeltaLo: null,
+      sumDeltaHi: null,
+      peakLo: null,
+      peakHi: null,
       notes: '',
       _cache: { loSwapSurp: null, hiSwapSurp: null },
     })

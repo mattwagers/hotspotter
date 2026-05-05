@@ -2,7 +2,9 @@ import type { Hotspot, TranscriptWord } from '../types'
 
 export const EXPORT_COLUMNS = [
   'hid', 'start_word', 'end_word', 'no_change',
-  'lo_swap', 'hi_swap', 'delta_lo', 'delta_hi', 'notes',
+  'lo_swap', 'hi_swap', 'delta_lo', 'delta_hi',
+  'sum_delta_lo', 'sum_delta_hi', 'peak_lo', 'peak_hi',
+  'notes',
 ] as const
 
 // ── parsing ────────────────────────────────────────────────────────────────
@@ -92,6 +94,10 @@ export function parseHotspotsCSV(
       hiSwap: getField(row, ['hiswap', 'hi_swap', 'hi', 'highswap']),
       deltaLo: parseFloatOrNull(getField(row, ['deltalo', 'delta_lo', 'dlo'])),
       deltaHi: parseFloatOrNull(getField(row, ['deltahi', 'delta_hi', 'dhi'])),
+      sumDeltaLo: parseFloatOrNull(getField(row, ['sumdeltalo', 'sum_delta_lo'])),
+      sumDeltaHi: parseFloatOrNull(getField(row, ['sumdeltahi', 'sum_delta_hi'])),
+      peakLo: parseFloatOrNull(getField(row, ['peaklo', 'peak_lo'])),
+      peakHi: parseFloatOrNull(getField(row, ['peakhi', 'peak_hi'])),
       notes: getField(row, ['notes', 'note', 'comment']),
       _cache: { loSwapSurp: null, hiSwapSurp: null },
     }
@@ -112,6 +118,10 @@ export function exportHotspotsCSV(hotspots: Hotspot[]): string {
       csvCell(h.hiSwap),
       h.deltaLo ?? '',
       h.deltaHi ?? '',
+      h.sumDeltaLo ?? '',
+      h.sumDeltaHi ?? '',
+      h.peakLo ?? '',
+      h.peakHi ?? '',
       csvCell(h.notes),
     ].join(',')
   )

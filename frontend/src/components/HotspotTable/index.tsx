@@ -8,7 +8,7 @@ const INPUT =
   'w-full bg-transparent border-0 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-400 rounded px-1'
 
 function DeltaCell({ value }: { value: number | null }) {
-  if (value === null) return <span className="text-gray-300">—</span>
+  if (value == null) return <span className="text-gray-300">—</span>
   const color = value > 0 ? 'text-red-600' : value < 0 ? 'text-blue-600' : 'text-gray-500'
   return <span className={color}>{value > 0 ? '+' : ''}{value.toFixed(3)}</span>
 }
@@ -60,7 +60,7 @@ function SparklineExpander({ hotspot, words }: { hotspot: Hotspot; words: { surp
 
   return (
     <tr className="bg-gray-50 border-b border-gray-100">
-      <td colSpan={10} className="px-4 py-2">
+      <td colSpan={14} className="px-4 py-2">
         <div className="flex gap-6 items-end">
           <SparklineBars values={baseline} color="#94a3b8" label="Baseline" />
           <SparklineBars values={hotspot._cache.loSwapSurp} color="#6366f1" label="Lo Swap" />
@@ -135,6 +135,18 @@ function HotspotRow({ hotspot }: { hotspot: Hotspot }) {
         <td className={`${CELL} text-right tabular-nums`}>
           <DeltaCell value={hotspot.deltaHi} />
         </td>
+        <td className={`${CELL} text-right tabular-nums`}>
+          <DeltaCell value={hotspot.sumDeltaLo} />
+        </td>
+        <td className={`${CELL} text-right tabular-nums`}>
+          <DeltaCell value={hotspot.sumDeltaHi} />
+        </td>
+        <td className={`${CELL} text-right tabular-nums text-gray-500`}>
+          {hotspot.peakLo !== null ? hotspot.peakLo.toFixed(3) : <span className="text-gray-300">—</span>}
+        </td>
+        <td className={`${CELL} text-right tabular-nums text-gray-500`}>
+          {hotspot.peakHi !== null ? hotspot.peakHi.toFixed(3) : <span className="text-gray-300">—</span>}
+        </td>
         <td className={CELL}>
           <input
             className={INPUT}
@@ -179,7 +191,7 @@ function HotspotRow({ hotspot }: { hotspot: Hotspot }) {
   )
 }
 
-const HEADERS = ['HID', 'Start', 'End', 'No Change', 'Lo Swap', 'Hi Swap', 'ΔLo', 'ΔHi', 'Notes', '']
+const HEADERS = ['HID', 'Start', 'End', 'No Change', 'Lo Swap', 'Hi Swap', 'ΔLo', 'ΔHi', 'ΣΔLo', 'ΣΔHi', 'Pk Lo', 'Pk Hi', 'Notes', '']
 
 export default function HotspotTable() {
   const hotspots = useStore((s) => s.hotspots)

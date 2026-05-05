@@ -12,6 +12,24 @@ export function computeDelta(
   return mean(validSwap) - mean(validBaseline)
 }
 
+// sum(swap) − sum(baseline): total bits difference, sensitive to phrase length.
+export function computeSumDelta(
+  baseline: MaybeSurp[],
+  swap: MaybeSurp[]
+): number | null {
+  const validBaseline = baseline.filter((v): v is number => v !== null)
+  const validSwap = swap.filter((v): v is number => v !== null)
+  if (validBaseline.length === 0 || validSwap.length === 0) return null
+  return sum(validSwap) - sum(validBaseline)
+}
+
+// max surprisal in swap (absolute), useful for spotting a single high-surprisal word.
+export function computePeak(swap: MaybeSurp[]): number | null {
+  const valid = swap.filter((v): v is number => v !== null)
+  if (valid.length === 0) return null
+  return Math.max(...valid)
+}
+
 export function gaussianSmooth(values: MaybeSurp[], kernelSize: number): MaybeSurp[] {
   if (kernelSize <= 1) return values
   const half = Math.floor(kernelSize / 2)
@@ -44,4 +62,8 @@ function gaussianKernel(size: number): number[] {
 
 function mean(vals: number[]): number {
   return vals.reduce((a, b) => a + b, 0) / vals.length
+}
+
+function sum(vals: number[]): number {
+  return vals.reduce((a, b) => a + b, 0)
 }
