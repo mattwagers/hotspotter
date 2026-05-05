@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 288" role="img">
+<title>Hotspotter logo</title>
+<desc>A banana slug holding a hairdryer aimed at a melting text block, with orange heat waves</desc>
+ 
+<!-- SLUG TAIL -->
+<path d="M 132,200 Q 108,190 112,172 Q 118,156 140,168 L 146,234 Q 130,237 132,200 Z" fill="#D4AE10"/>
+ 
+<!-- SLUG BODY -->
+<ellipse cx="250" cy="200" rx="122" ry="50" fill="#E8C418"/>
+ 
+<!-- MANTLE -->
+<ellipse cx="248" cy="166" rx="78" ry="28" fill="#CCAA00"/>
+ 
+<!-- UNDERBELLY -->
+<ellipse cx="250" cy="242" rx="112" ry="13" fill="#CCAA00" opacity="0.5"/>
+ 
+<!-- HAIRDRYER HANDLE -->
+<rect x="403" y="215" width="28" height="55" rx="11" fill="#546E7A"/>
+ 
+<!-- HAIRDRYER BODY -->
+<rect x="390" y="160" width="72" height="58" rx="10" fill="#546E7A"/>
+<rect x="396" y="166" width="58" height="44" rx="7" fill="#607D8B" opacity="0.45"/>
+ 
+<!-- VENT SLOTS -->
+<rect x="402" y="172" width="5" height="32" rx="2" fill="#37474F"/>
+<rect x="413" y="172" width="5" height="32" rx="2" fill="#37474F"/>
+<rect x="424" y="172" width="5" height="32" rx="2" fill="#37474F"/>
+ 
+<!-- NOZZLE -->
+<rect x="455" y="172" width="42" height="34" rx="7" fill="#37474F"/>
+<rect x="489" y="176" width="12" height="26" rx="4" fill="#1A2A30"/>
+ 
+<!-- POWER BUTTON -->
+<circle cx="441" cy="190" r="9" fill="#FF8A65"/>
+<circle cx="441" cy="190" r="6" fill="#FF5722"/>
+ 
+<!-- SLUG HEAD -->
+<ellipse cx="360" cy="186" rx="46" ry="43" fill="#E8C418"/>
+ 
+<!-- SLUG SPOTS -->
+<circle cx="178" cy="198" r="13" fill="#7A5C00" opacity="0.36"/>
+<circle cx="216" cy="215" r="9" fill="#7A5C00" opacity="0.30"/>
+<circle cx="274" cy="208" r="11" fill="#7A5C00" opacity="0.34"/>
+<circle cx="320" cy="199" r="7" fill="#7A5C00" opacity="0.28"/>
+ 
+<!-- EYE STALK 1 -->
+<path d="M 344,152 Q 330,114 318,80" stroke="#9A7400" stroke-width="6.5" fill="none" stroke-linecap="round"/>
+<circle cx="318" cy="74" r="16" fill="#1C1C1C"/>
+<circle cx="313" cy="69" r="5.5" fill="white" opacity="0.88"/>
+ 
+<!-- EYE STALK 2 -->
+<path d="M 368,148 Q 373,110 376,76" stroke="#9A7400" stroke-width="6.5" fill="none" stroke-linecap="round"/>
+<circle cx="376" cy="70" r="16" fill="#1C1C1C"/>
+<circle cx="371" cy="65" r="5.5" fill="white" opacity="0.88"/>
+ 
+<!-- SMILE -->
+<path d="M 348,198 Q 361,212 374,198" stroke="#9A7400" stroke-width="4" fill="none" stroke-linecap="round"/>
+ 
+<!-- HEAT WAVES -->
+<path d="M 504,174 Q 516,161 528,174 Q 540,187 552,174" stroke="#FF4500" stroke-width="5" fill="none" stroke-linecap="round"/>
+<path d="M 504,186 Q 516,173 528,186 Q 540,199 552,186" stroke="#FF6D30" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+<path d="M 504,198 Q 516,185 528,198 Q 540,211 552,198" stroke="#FF8C5A" stroke-width="4" fill="none" stroke-linecap="round"/>
+ 
+<!-- HEAT GLOW -->
+<ellipse cx="506" cy="186" rx="14" ry="18" fill="#FF5722" opacity="0.10"/>
+ 
+<!-- TEXT BLOCK -->
+<rect x="560" y="146" width="90" height="104" rx="5" fill="#ECEFF1" stroke="#B0BEC5" stroke-width="1.5"/>
+<rect x="570" y="162" width="64" height="7" rx="2.5" fill="#78909C"/>
+<rect x="570" y="176" width="56" height="7" rx="2.5" fill="#78909C"/>
+<rect x="570" y="190" width="60" height="7" rx="2.5" fill="#78909C"/>
+<rect x="570" y="204" width="36" height="7" rx="2.5" fill="#FF7043"/>
+<rect x="610" y="204" width="22" height="7" rx="2.5" fill="#78909C"/>
+ 
+<!-- MELTING BOTTOM EDGE -->
+<path d="M 560,240 Q 568,255 576,240 Q 584,255 592,240 Q 600,255 608,240 Q 616,255 624,240 Q 632,255 640,240 Q 645,250 650,244 L 650,250 L 560,250 Z" fill="#ECEFF1"/>
+ 
+<!-- DRIP DROPS -->
+<ellipse cx="576" cy="261" rx="5.5" ry="9" fill="#ECEFF1" stroke="#B0BEC5" stroke-width="1"/>
+<ellipse cx="600" cy="267" rx="4.5" ry="8" fill="#ECEFF1" stroke="#B0BEC5" stroke-width="1"/>
+<ellipse cx="624" cy="259" rx="4" ry="7" fill="#ECEFF1" stroke="#B0BEC5" stroke-width="1"/>
+ 
+<!-- WARM TINT -->
+<rect x="560" y="146" width="90" height="104" rx="5" fill="#FF5722" opacity="0.06"/>
+ 
+</svg>
